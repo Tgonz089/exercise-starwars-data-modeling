@@ -12,7 +12,7 @@ class User(Base):
     # Here we define columns for the table address.
     # Notice that each column is also a normal Python instance attribute.
     id = Column(Integer, primary_key=True)
-    email = Column(String(256), unique=True nullable = False)
+    email = Column(String(256), unique=True, nullable = False)
     name = Column(String(256))
     password = Column (String(256), nullable = False)
 
