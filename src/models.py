@@ -1,6 +1,6 @@
 import os
 import sys
-from sqlalchemy import Column, ForeignKey, Integer, String
+from sqlalchemy import Column, ForeignKey, Integer, String, Float
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from sqlalchemy import create_engine
@@ -15,6 +15,7 @@ class User(Base):
     email = Column(String(256), unique=True, nullable = False)
     name = Column(String(256))
     password = Column (String(256), nullable = False)
+    Favorite_id = Column(Integer, ForeignKey("Favorites.id"))
 
 class Person(Base):
     __tablename__ = 'Person'
@@ -26,6 +27,9 @@ class Person(Base):
     eye_color = Column(String(25))
     hair_color = Column(String(25))
     gender = Column(String(25))
+    height = Column(Float)
+    mass = Column(Float)
+    Planet_id = Column(Integer, ForeignKey("Planet.id"))
 
 class Planet(Base):
     __tablename__ = 'Planet'
@@ -36,6 +40,8 @@ class Planet(Base):
     planet_name = Column(String(256))
     population = Column(String(256))
     terrain = Column(String(25))
+    gravity = Column(Integer)
+    orbital_period = Column(Integer)
 
 class Vehicle(Base):
     __tablename__ = 'Vehicle'
@@ -45,7 +51,12 @@ class Vehicle(Base):
     vehicle_name = Column(String(256))
     crew_size = Column(String(25))
     model = Column(String(256))
-
+    cost_in_credits = Column(Float)
+    consumables = Column(String(256))
+    cargo_capacity = Column(Integer)
+    length = Column(Float)
+    manufacturer = Column(String(256))
+    max_atmosphering_speed = Column(Integer)
 
 class Favorites(Base):
     __tablename__ = 'Favorites'
@@ -60,7 +71,6 @@ class Favorites(Base):
     Vehicle = relationship(Vehicle)
     Planet = relationship(Planet)
     User = relationship(User)
-
 
     def to_dict(self):
         return {}
