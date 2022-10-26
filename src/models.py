@@ -7,6 +7,7 @@ from sqlalchemy import create_engine
 from eralchemy import render_er
 
 Base = declarative_base()
+
 class User(Base):
     __tablename__ = 'User'
     # Here we define columns for the table address.
@@ -30,6 +31,7 @@ class Person(Base):
     height = Column(Float)
     mass = Column(Float)
     Planet_id = Column(Integer, ForeignKey("Planet.id"))
+    person = relationship("Favorites",secondary="Person_To_Favorites")
 
 class Planet(Base):
     __tablename__ = 'Planet'
@@ -42,6 +44,7 @@ class Planet(Base):
     terrain = Column(String(25))
     gravity = Column(Integer)
     orbital_period = Column(Integer)
+    planet = relationship("Favorites",secondary="Planet_To_Favorites")
 
 class Vehicle(Base):
     __tablename__ = 'Vehicle'
@@ -57,6 +60,7 @@ class Vehicle(Base):
     length = Column(Float)
     manufacturer = Column(String(256))
     max_atmosphering_speed = Column(Integer)
+    vehicle = relationship("Favorites",secondary="Vehicle_To_Favorites")
 
 class Favorites(Base):
     __tablename__ = 'Favorites'
@@ -64,13 +68,22 @@ class Favorites(Base):
     # Notice that each column is also a normal Python instance attribute.
     id = Column(Integer, primary_key=True)
     User_id = Column(Integer, ForeignKey('User.id'))
-    Person_fav_id = Column(Integer, ForeignKey('Person.id'))
-    Planet_fav_id = Column(Integer, ForeignKey('Planet.id'))
-    Vehicle_fav_id = Column(Integer, ForeignKey('Vehicle.id'))
-    Person = relationship(Person)
-    Vehicle = relationship(Vehicle)
-    Planet = relationship(Planet)
     User = relationship(User)
+
+class Person_To_Favorites(Base):
+    __tablename__ = 'Person_To_Favorites'
+    person_id = Column(Integer,ForeignKey("Person.id"),primary_key=True)
+    favorites_id = Column(Integer,ForeignKey("Favorites.id"),primary_key=True)
+
+class Planet_To_Favorites(Base):
+    __tablename__ = 'Planet_To_Favorites'
+    planet_id = Column(Integer, ForeignKey("Planet.id"), primary_key=True)
+    favorites_id = Column(Integer,ForeignKey("Favorites.id"),primary_key=True)
+
+class Vehicle_To_Favorites(Base):
+    __tablename__ = 'Vehicle_To_Favorites'
+    vehicle_id = Column(Integer, ForeignKey("Vehicle.id"), primary_key=True)
+    favorites_id = Column(Integer,ForeignKey("Favorites.id"),primary_key=True)
 
     def to_dict(self):
         return {}
