@@ -16,7 +16,9 @@ class User(Base):
     email = Column(String(256), unique=True, nullable = False)
     name = Column(String(256))
     password = Column (String(256), nullable = False)
-    Favorite_id = Column(Integer, ForeignKey("Favorites.id"))
+    Planet_To_Favorites_id = Column(Integer, ForeignKey("Planet_To_Favorites.id"))
+    Person_To_Favorites_id = Column(Integer, ForeignKey("Person_To_Favorites.id"))
+    Vehicle_To_Favorites_id = Column(Integer, ForeignKey("Vehicle_To_Favorites.id"))
 
 class Person(Base):
     __tablename__ = 'Person'
@@ -31,7 +33,7 @@ class Person(Base):
     height = Column(Float)
     mass = Column(Float)
     Planet_id = Column(Integer, ForeignKey("Planet.id"))
-    person = relationship("Favorites",secondary="Person_To_Favorites")
+    person = relationship("Person_To_Favorites")
 
 class Planet(Base):
     __tablename__ = 'Planet'
@@ -44,7 +46,7 @@ class Planet(Base):
     terrain = Column(String(25))
     gravity = Column(Integer)
     orbital_period = Column(Integer)
-    planet = relationship("Favorites",secondary="Planet_To_Favorites")
+    planet = relationship("Planet_To_Favorites")
 
 class Vehicle(Base):
     __tablename__ = 'Vehicle'
@@ -60,28 +62,22 @@ class Vehicle(Base):
     length = Column(Float)
     manufacturer = Column(String(256))
     max_atmosphering_speed = Column(Integer)
-    vehicle = relationship("Favorites",secondary="Vehicle_To_Favorites")
+    vehicle = relationship("Vehicle_To_Favorites")
 
 class Person_To_Favorites(Base):
     __tablename__ = 'Person_To_Favorites'
     person_id = Column(Integer,ForeignKey("Person.id"),primary_key=True)
     favorites_id = Column(Integer,ForeignKey("Favorites.id"),primary_key=True)
-    User_id = Column(Integer, ForeignKey('User.id'))
-    User = relationship(User)
 
 class Planet_To_Favorites(Base):
     __tablename__ = 'Planet_To_Favorites'
     planet_id = Column(Integer, ForeignKey("Planet.id"), primary_key=True)
     favorites_id = Column(Integer,ForeignKey("Favorites.id"),primary_key=True)
-    User_id = Column(Integer, ForeignKey('User.id'))
-    User = relationship(User)
 
 class Vehicle_To_Favorites(Base):
     __tablename__ = 'Vehicle_To_Favorites'
     vehicle_id = Column(Integer, ForeignKey("Vehicle.id"), primary_key=True)
     favorites_id = Column(Integer,ForeignKey("Favorites.id"),primary_key=True)
-    User_id = Column(Integer, ForeignKey('User.id'))
-    User = relationship(User)
 
     def to_dict(self):
         return {}
