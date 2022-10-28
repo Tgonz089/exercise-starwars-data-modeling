@@ -16,9 +16,6 @@ class User(Base):
     email = Column(String(256), unique=True, nullable = False)
     name = Column(String(256))
     password = Column (String(256), nullable = False)
-    Planet_To_Favorites_id = Column(Integer, ForeignKey("Planet_To_Favorites.id"))
-    Person_To_Favorites_id = Column(Integer, ForeignKey("Person_To_Favorites.id"))
-    Vehicle_To_Favorites_id = Column(Integer, ForeignKey("Vehicle_To_Favorites.id"))
 
 class Person(Base):
     __tablename__ = 'Person'
@@ -67,17 +64,17 @@ class Vehicle(Base):
 class Person_To_Favorites(Base):
     __tablename__ = 'Person_To_Favorites'
     person_id = Column(Integer,ForeignKey("Person.id"),primary_key=True)
-    favorites_id = Column(Integer,ForeignKey("Favorites.id"),primary_key=True)
+    user_id = Column(Integer,ForeignKey("User.id"),primary_key=True)
 
 class Planet_To_Favorites(Base):
     __tablename__ = 'Planet_To_Favorites'
     planet_id = Column(Integer, ForeignKey("Planet.id"), primary_key=True)
-    favorites_id = Column(Integer,ForeignKey("Favorites.id"),primary_key=True)
+    user_id = Column(Integer,ForeignKey("User.id"),primary_key=True)
 
 class Vehicle_To_Favorites(Base):
     __tablename__ = 'Vehicle_To_Favorites'
     vehicle_id = Column(Integer, ForeignKey("Vehicle.id"), primary_key=True)
-    favorites_id = Column(Integer,ForeignKey("Favorites.id"),primary_key=True)
+    user_id = Column(Integer,ForeignKey("User.id"),primary_key=True)
 
     def to_dict(self):
         return {}
