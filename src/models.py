@@ -62,28 +62,26 @@ class Vehicle(Base):
     max_atmosphering_speed = Column(Integer)
     vehicle = relationship("Favorites",secondary="Vehicle_To_Favorites")
 
-class Favorites(Base):
-    __tablename__ = 'Favorites'
-    # Here we define columns for the table address.
-    # Notice that each column is also a normal Python instance attribute.
-    id = Column(Integer, primary_key=True)
-    User_id = Column(Integer, ForeignKey('User.id'))
-    User = relationship(User)
-
 class Person_To_Favorites(Base):
     __tablename__ = 'Person_To_Favorites'
     person_id = Column(Integer,ForeignKey("Person.id"),primary_key=True)
     favorites_id = Column(Integer,ForeignKey("Favorites.id"),primary_key=True)
+    User_id = Column(Integer, ForeignKey('User.id'))
+    User = relationship(User)
 
 class Planet_To_Favorites(Base):
     __tablename__ = 'Planet_To_Favorites'
     planet_id = Column(Integer, ForeignKey("Planet.id"), primary_key=True)
     favorites_id = Column(Integer,ForeignKey("Favorites.id"),primary_key=True)
+    User_id = Column(Integer, ForeignKey('User.id'))
+    User = relationship(User)
 
 class Vehicle_To_Favorites(Base):
     __tablename__ = 'Vehicle_To_Favorites'
     vehicle_id = Column(Integer, ForeignKey("Vehicle.id"), primary_key=True)
     favorites_id = Column(Integer,ForeignKey("Favorites.id"),primary_key=True)
+    User_id = Column(Integer, ForeignKey('User.id'))
+    User = relationship(User)
 
     def to_dict(self):
         return {}
